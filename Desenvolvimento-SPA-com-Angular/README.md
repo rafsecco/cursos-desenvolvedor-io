@@ -18,3 +18,8 @@ npm install npm@latest -g
 - [NPM packages](https://www.npmjs.com/)
 - [Angular cli](https://angular.dev/tools/cli)
 - [Angular DevTools](https://addons.mozilla.org/en-US/firefox/addon/angular-devtools/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Angular Material](https://material.angular.dev/)
+- [Font-Awesome](https://fontawesome.com/)
+- [cdnjs Lib font-awesome](https://cdnjs.com/libraries/font-awesome)
+- [json-server](https://www.npmjs.com/package/json-server)
