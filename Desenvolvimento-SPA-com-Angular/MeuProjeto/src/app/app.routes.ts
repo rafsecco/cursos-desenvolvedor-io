@@ -16,4 +16,5 @@ export const routes: Routes = [
     path: 'contato',
     loadComponent: () => import('./institucional/contato/contato').then((m) => m.Contato),
   },
+  { path: 'feature-data-binding', loadComponent: () => import('./demos/data-binding/data-binding').then((m) => m.DataBinding) },
 ];
