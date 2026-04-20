@@ -3,7 +3,7 @@
 		@for (produto of produtos$ | async; track produto.id) {
 			<div class="col-md-4" style="padding-bottom: 30px">
 				<div class="card h-100">
-					<a class="text-decoration-none">
+					<a class="text-decoration-none" [routerLink]="['/produto-detalhe', produto.id]">
 						<img src="/assets/{{ produto.imagem }}" height="164" width="253" />
 					</a>
 
@@ -41,7 +41,7 @@
 					}
 
 					<div class="card-footer">
-						<a class="btn btn-primary">
+						<a class="btn btn-primary" [routerLink]="['/carrinho', produto.id]">
 							<span class="fa fa-shopping-cart"></span> Comprar
 						</a>
 					</div>
