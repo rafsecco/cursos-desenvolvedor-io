@@ -23,3 +23,4 @@ npm install npm@latest -g
 - [Font-Awesome](https://fontawesome.com/)
 - [cdnjs Lib font-awesome](https://cdnjs.com/libraries/font-awesome)
 - [json-server](https://www.npmjs.com/package/json-server)
+- [npm-check-updates](https://www.npmjs.com/package/npm-check-updates)

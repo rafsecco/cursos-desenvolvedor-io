@@ -11,25 +11,17 @@
 						{{ produto.nome | titlecase }}
 					</h4>
 
-					@if (produto.promocao) {
-						<p>Promoção!</p>
-					} @else {
-						<p>Por apenas:</p>
+					@switch (produto.promocao) {
+						@case (true) { <p>Promoção!</p> }
+						@case (false) { <p>Por apenas:</p> }
 					}
 
 					@if (produto.promocao) {
 						<div class="card-body">
 							<h4>
 								De:
-								<small
-									><del>{{
-										produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt'
-									}}</del></small
-								>
-								Por:
-								{{
-									produto.valorPromo | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt'
-								}}
+								<small><del>{{ produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}</del></small>
+								Por: {{ produto.valorPromo | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}
 							</h4>
 						</div>
 					} @else {
