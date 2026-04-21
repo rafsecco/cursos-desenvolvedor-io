@@ -11,9 +11,9 @@ npm install npm@latest -g
 
 ### Links 
 
-- [01 - Documentação Angular](https://angular.io/docs)
-- [02 - NPM ng-brazil](https://www.npmjs.com/package/ng-brazil)
-- [03 - NPM ng2-validation](https://www.npmjs.com/package/ng2-validation)
+- [01 - Documentação Angular](https://angular.io/docs) - Antigo, usar este [Angular Style Guide](https://angular.dev/style-guide)
+- [02 - NPM ng-brazil](https://www.npmjs.com/package/ng-brazil) - Antigo, usar este [ngx-mask](https://www.npmjs.com/package/ngx-mask)
+- [03 - NPM ng2-validation](https://www.npmjs.com/package/ng2-validation) - Antigo, usar este [ngx-mask](https://www.npmjs.com/package/ngx-mask)
 - [04 - RxJS](https://rxjs-dev.firebaseapp.com/)
 - [05 - NgRx](https://ngrx.io/)
 - [06 - Redux](https://redux.js.org/)
@@ -22,4 +22,3 @@ npm install npm@latest -g
 - [09 - Jasmine](https://jasmine.github.io/)
 - [10 - Protractor e2e](https://www.protractortest.org/#/)
 
-- [Angular Style Guide](https://angular.dev/style-guide)

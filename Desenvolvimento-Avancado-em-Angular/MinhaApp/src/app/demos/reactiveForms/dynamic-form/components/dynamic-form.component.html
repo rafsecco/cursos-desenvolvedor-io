@@ -1,0 +1,17 @@
+<div class="container main-container">
+	<h4>Formulário Dinâmico</h4>
+	<hr />
+	<form [formGroup]="form" (ngSubmit)="submit()">
+		@for (field of fields; track field.key) {
+			<ng-container dynamicField [field]="field" [form]="form"> </ng-container>
+		}
+
+		<div class="form-group">
+			<div class="col-md-4 col-md-offset-2">
+				<button class="btn btn-success" id="Registrar" [disabled]="!form.valid" type="submit">
+					Registrar
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
