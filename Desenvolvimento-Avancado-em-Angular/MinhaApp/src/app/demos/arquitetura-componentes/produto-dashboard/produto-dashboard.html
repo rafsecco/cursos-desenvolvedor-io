@@ -1,0 +1,14 @@
+<div class="container main-container">
+	<h1 #teste>Lista Produtos</h1>
+
+	<produto-count [produtos]="produtos"></produto-count>
+
+	<div class="row text-center">
+		@for (produto of produtos; track produtos.keys()) {
+			<produt-card-detalhe class="col-md-4" [produto]="produto" (status)="mudarStatus($event)">
+				<h5 class="acabou">Ou vá até uma de nossas lojas</h5>
+				<h5 class="corre">Corre que vai acabar</h5>
+			</produt-card-detalhe>
+		}
+	</div>
+</div>
