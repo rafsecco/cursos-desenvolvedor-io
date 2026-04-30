@@ -7,4 +7,23 @@ import { RouterModule } from '@angular/router';
   templateUrl: 'menu.html',
   styles: ``,
 })
-export class Menu {}
+export class Menu {
+
+  nav: Nav[] = [
+    { link: 'home', name: 'Home', exact: true, admin: false },
+    { link: 'produtos', name: 'Produtos', exact: false, admin: false },
+    { link: 'cadastro', name: 'Cadastro', exact: false, admin: true },
+    { link: 'form-dinamico', name: 'Form Dinâmico', exact: false, admin: true },
+    { link: 'sobre', name: 'Sobre', exact: false, admin: false },
+    { link: 'contato', name: 'Contato', exact: false, admin: false },
+    { link: 'admin', name: 'Admin', exact: true, admin: true }
+  ];
+}
+
+
+interface Nav {
+  link: string,
+  name: string,
+  exact: boolean,
+  admin: boolean
+}

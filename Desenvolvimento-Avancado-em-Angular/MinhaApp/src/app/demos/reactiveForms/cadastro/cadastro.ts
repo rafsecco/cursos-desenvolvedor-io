@@ -15,6 +15,7 @@ import { senhaConfirmacaoValidator } from '../../../shared/validators/senhaConfi
 import { GenericValidator } from './generic-form-validation';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { CadastroFormModel } from './models/CadastroFormModel';
+import { CanExit } from '../../../services/unsavedChangesGuard';
 
 type DisplayMessage = {
   [K in keyof CadastroFormModel]?: string;
@@ -27,7 +28,11 @@ type DisplayMessage = {
   providers: [provideNgxMask()],
   templateUrl: './cadastro.html'
 })
-export class Cadastro {
+export class Cadastro implements CanExit {
+
+  hasChanges(): boolean {
+    return this.cadastroForm.dirty;
+  }
 
   private fb = inject(NonNullableFormBuilder);
   formResult = signal('');
