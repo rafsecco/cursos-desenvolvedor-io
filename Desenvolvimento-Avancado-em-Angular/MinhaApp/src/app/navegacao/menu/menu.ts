@@ -11,6 +11,7 @@ export class Menu {
 
   nav: Nav[] = [
     { link: 'home', name: 'Home', exact: true, admin: false },
+    { link: 'filmes', name: 'Filmes', exact: true, admin: false },
     { link: 'produtos', name: 'Produtos', exact: false, admin: false },
     { link: 'cadastro', name: 'Cadastro', exact: false, admin: true },
     { link: 'form-dinamico', name: 'Form Dinâmico', exact: false, admin: true },

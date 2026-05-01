@@ -16,10 +16,10 @@ export const routes: Routes = [
 
   // lazy loading - rotas com children (subrotas)
   { path: 'produtos', loadChildren: () => import('./demos/arquitetura-componentes/produto.route').then((m) => m.PRODUTO_ROUTES) },
+  { path: 'filmes', loadComponent: () => import('./demos/pipes/filmes/filmes').then((m) => m.Filmes) },
   { path: 'cadastro', loadComponent: () => import('./demos/reactiveForms/cadastro/cadastro').then((m) => m.Cadastro), canDeactivate: [unsavedChangesGuard] },
   { path: 'form-dinamico', loadComponent: () => import('./demos/reactiveForms/dynamic-form/components/dynamic-form.component').then((m) => m.DynamicFormComponent) },
 
-  // { path: 'admin', loadChildren: () => import('./admin/admin.route').then((m) => m.ADMIN_ROUTES), canLoad: [AuthGuard], canActivate: [AuthGuard] },
   {
     path: 'admin',
     loadChildren: () =>
