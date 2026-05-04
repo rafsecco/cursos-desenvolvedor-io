@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: 'bar', loadComponent: () => import('./demos/bar-di-zones/bar.component').then((m) => m.BarComponent) },
   { path: 'cadastro', loadComponent: () => import('./demos/reactiveForms/cadastro/cadastro').then((m) => m.Cadastro), canDeactivate: [unsavedChangesGuard] },
   { path: 'form-dinamico', loadComponent: () => import('./demos/reactiveForms/dynamic-form/components/dynamic-form.component').then((m) => m.DynamicFormComponent) },
+  { path: 'todo', loadComponent: () => import('./demos/todo-list/todo.component').then((m) => m.TodoComponent) },
 
   {
     path: 'admin',

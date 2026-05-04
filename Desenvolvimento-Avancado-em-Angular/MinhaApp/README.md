@@ -64,3 +64,7 @@ For more information on using the Angular CLI, including detailed command refere
 npx json-server produtos.json
 ```
 
+### Projetos
+
+#### TodoList
+  npm run mock
