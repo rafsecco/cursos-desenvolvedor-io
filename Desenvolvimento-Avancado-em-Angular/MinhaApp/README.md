@@ -68,3 +68,11 @@ npx json-server produtos.json
 
 #### TodoList
   npm run mock
+
+
+#### Teste de unidade
+
+npm install -D jest@29 ts-jest@29 jest-preset-angular @types/jest
+rmdir /s /q node_modules
+del package-lock.json
+npm install

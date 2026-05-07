@@ -34,7 +34,8 @@
 /* Ícones */
 .task-list__finalizado,
 .task-list__iniciado,
-.task-list__retroceder {
+.task-list__retroceder,
+.task-list__remover {
   width: 22px;
   height: 20px;
   cursor: pointer;
@@ -52,4 +53,8 @@
 
 .task-list__retroceder {
   background: url(/assets/retroceder_ativo.png) no-repeat center;
+}
+
+.task-list__remover {
+  background: url(/assets/lixo.png) no-repeat center;
 }

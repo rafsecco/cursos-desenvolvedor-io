@@ -1,4 +1,6 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { TasksService } from '../../todo.service';
 import { Store } from '../../todo.store';
 import { TodoList } from '../todo-list/todo-list';
@@ -10,18 +12,20 @@ import { TodoList } from '../todo-list/todo-list';
   templateUrl: './tasks.html',
 })
 export class Tasks {
-  private service = inject(TasksService);
-  private store = inject(Store);
-
+  private readonly service = inject(TasksService);
+  private readonly store = inject(Store);
+  private readonly destroyRef = inject(DestroyRef);
   todolist = this.store.pendentes;
 
   constructor() {
-    effect(() => {
-      this.service.loadTasks().subscribe();
-    });
+    this.service.loadTasks().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
-  onToggle(event: any) {
-    this.service.toggle(event.task);
+  onToggle(event: { task: import('../../task').Task }): void {
+    this.service.toggle(event.task).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+  }
+
+  removeTask(event: { id: number }): void {
+    this.service.removeTask(event.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 }

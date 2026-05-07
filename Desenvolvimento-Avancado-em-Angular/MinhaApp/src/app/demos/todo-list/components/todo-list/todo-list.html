@@ -5,7 +5,7 @@
 
 	<table class="table table-striped">
 		<tbody>
-			@for (item of list; track $index) {
+			@for (item of list(); track item.id) {
 				<tr>
 					<td>
 						<span class="task-name">{{ item.nome }}</span>
@@ -26,6 +26,8 @@
 							@if (!item.finalizado && item.iniciado) {
 								<span class="task-list__retroceder" (click)="toggleItem($index, 'cancelar')"></span>
 							}
+
+							<span class="task-list__remover" (click)="removeItem(item.id)"></span>
 						</div>
 					</td>
 				</tr>

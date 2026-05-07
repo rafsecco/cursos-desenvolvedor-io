@@ -1,37 +1,48 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, input, output } from '@angular/core';
 import { Task } from '../../task';
+
+type Acao =
+  | 'iniciar'
+  | 'finalizar'
+  | 'retomar'
+  | 'cancelar';
 
 @Component({
   selector: 'app-todo-list',
-  standalone: true,
   templateUrl: './todo-list.html',
   styleUrls: ['./todo-list.css'],
 })
 export class TodoList {
-  @Input({ required: true })
-  list!: Task[];
+  list = input.required<Task[]>();
 
-  @Output()
-  toggle = new EventEmitter<{ task: Task }>();
+  toggle = output<{ task: Task }>();
 
-  toggleItem(index: number, acao: string) {
-    const task = { ...this.list[index] };
+  remove = output<{ id: number }>();
 
-    console.log('Toggling task:', task, 'Action:', acao);
+  toggleItem(index: number, acao: Acao): void {
+
+    const currentTask = this.list()[index];
+
+    if (!currentTask) return;
+
+    const task: Task = { ...currentTask };
 
     switch (acao) {
       case 'iniciar':
         task.iniciado = true;
         task.finalizado = false;
         break;
+
       case 'finalizar':
         task.iniciado = false;
         task.finalizado = true;
         break;
+
       case 'retomar':
         task.iniciado = true;
         task.finalizado = false;
         break;
+
       case 'cancelar':
         task.iniciado = false;
         task.finalizado = false;
@@ -39,5 +50,9 @@ export class TodoList {
     }
 
     this.toggle.emit({ task });
+  }
+
+  removeItem(taskId: number) {
+    this.remove.emit({ id: taskId });
   }
 }
