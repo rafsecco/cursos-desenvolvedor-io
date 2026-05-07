@@ -33,4 +33,18 @@ export class Store {
       todolist: s.todolist.map((t) => (t.id === task.id ? task : t)),
     }));
   }
+
+  addTask(task: Task) {
+    this.state.update((s) => ({
+      ...s,
+      todolist: [...s.todolist, task],
+    }));
+  }
+
+  removeTask(id: number) {
+    this.state.update((s) => ({
+      ...s,
+      todolist: s.todolist.filter((t) => t.id !== id),
+    }));
+  }
 }
