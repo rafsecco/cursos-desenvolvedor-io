@@ -1,4 +1,3 @@
-# Editor configuration, see https://editorconfig.org
 root = true
 
 [*]
@@ -7,11 +6,24 @@ indent_style = space
 indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
+end_of_line = lf
 
-[*.ts]
+[*.{txt,cs,html,cshtml,java}]
+indent_size = 4
+indent_style = tab
+
+[*.{js,ts,json}]
 quote_type = single
 ij_typescript_use_double_quotes = false
 
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
+
+# root = true: Define que este é o arquivo .editorconfig raiz, e as configurações devem ser aplicadas a todos os arquivos abaixo dele.
+# indent_style: Define se o código usa espaços ou tabulação.
+# indent_size: Define o número de espaços para a indentação (por exemplo, 2 ou 4).
+# charset: Define o tipo de codificação de caracteres (geralmente UTF-8).
+# end_of_line: Define o tipo de nova linha (LF ou CRLF).
+# insert_final_newline: Garante que um caractere de nova linha seja inserido no final de cada arquivo.
+# trim_trailing_whitespace: Remove espaços em branco no final das linhas.

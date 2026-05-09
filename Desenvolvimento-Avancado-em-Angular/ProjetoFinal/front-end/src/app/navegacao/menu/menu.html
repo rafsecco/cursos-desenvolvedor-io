@@ -1,0 +1,58 @@
+<header>
+	<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
+		<div class="container">
+			<a class="navbar-brand" [routerLink]="['/home']"> Meus Produtos </a>
+
+			<button
+				class="navbar-toggler"
+				type="button"
+				(click)="toggleMenu()"
+				[attr.aria-expanded]="!isCollapsed()"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div
+				class="navbar-collapse flex-sm-row-reverse"
+				[class.collapse]="isCollapsed()"
+				[class.show]="!isCollapsed()"
+			>
+				<app-menu-login></app-menu-login>
+
+				<ul class="navbar-nav flex-grow-1">
+					<li class="nav-item">
+						<a
+							class="nav-link text-dark"
+							[routerLink]="['/home']"
+							routerLinkActive="active"
+							[routerLinkActiveOptions]="{ exact: true }"
+						>
+							Home
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a
+							class="nav-link text-dark"
+							[routerLink]="['/fornecedores/listar-todos']"
+							routerLinkActive="active"
+						>
+							Fornecedores
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a
+							class="nav-link text-dark"
+							[routerLink]="['/produtos/listar-todos']"
+							routerLinkActive="active"
+						>
+							Produtos
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
