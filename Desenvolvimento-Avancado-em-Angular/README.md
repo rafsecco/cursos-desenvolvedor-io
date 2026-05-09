@@ -27,7 +27,6 @@ npm install npm@latest -g
 - 07 - ~~[Akita](https://datorama.github.io/akita/) (deprecated)~~ → [Akita](https://opensource.salesforce.com/akita/)
 - 08 - [Karma Test Manager](https://karma-runner.github.io/latest/index.html)
 - 09 - [Jasmine](https://jasmine.github.io/)
-- 10 - ~~[Protractor e2e](https://www.protractortest.org/#/) (deprecated)~~
+- 10 - ~~[Protractor e2e](https://www.protractortest.org/#/) (deprecated)~~ → [Playwright](https://playwright.dev/)
 
-- [Jest](https://jestjs.io/pt-BR/)
-- [ts-jest](https://www.npmjs.com/package/ts-jest)
+- [Vitest](https://vitest.dev/)

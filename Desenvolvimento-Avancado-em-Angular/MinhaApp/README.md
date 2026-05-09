@@ -1,3 +1,70 @@
+## Run BackEnd
+
+```
+npx json-server produtos.json
+```
+
+### Projetos
+
+#### TodoList
+  npm run mock
+
+
+#### Teste de unidade
+
+<!-- npm install -D jest@30 ts-jest@29 jest-preset-angular @types/jest
+rmdir /s /q node_modules
+del package-lock.json -->
+
+npm install -D vitest jsdom @vitest/coverage-v8
+npm install -D @analogjs/vitest-angular
+
+npm install
+
+npm run test
+
+#### Teste e2e
+
+npm init playwright@latest
+npx playwright install
+npx playwright install --with-deps
+ou para baixar apenas o chromium
+npx playwright install chromium
+
+
+
+Inside that directory, you can run several commands:
+
+  npx playwright test
+    Runs the end-to-end tests.
+
+  npx playwright test --ui
+    Starts the interactive UI mode.
+
+  npx playwright test --project=chromium
+    Runs the tests only on Desktop Chrome.
+
+  npx playwright test example
+    Runs the tests in a specific file.
+
+  npx playwright test --debug
+    Runs the tests in debug mode.
+
+  npx playwright codegen
+    Auto generate tests with Codegen.
+
+We suggest that you begin by typing:
+
+    npx playwright test
+
+And check out the following files:
+  - .\e2e\example.spec.ts - Example end-to-end test
+  - .\playwright.config.ts - Playwright Test configuration
+
+Visit https://playwright.dev/docs/intro for more information. ✨
+
+---
+
 # MinhaApp
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
@@ -58,27 +125,3 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-## Run BackEnd
-
-```
-npx json-server produtos.json
-```
-
-### Projetos
-
-#### TodoList
-  npm run mock
-
-
-#### Teste de unidade
-
-<!-- npm install -D jest@30 ts-jest@29 jest-preset-angular @types/jest
-rmdir /s /q node_modules
-del package-lock.json -->
-
-npm install -D vitest jsdom @vitest/coverage-v8
-npm install -D @analogjs/vitest-angular
-
-npm install
-
-npm run test

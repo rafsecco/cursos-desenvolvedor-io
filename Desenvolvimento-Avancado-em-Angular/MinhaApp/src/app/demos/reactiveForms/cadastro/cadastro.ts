@@ -67,7 +67,7 @@ export class Cadastro implements CanExit {
     },
     senhaConfirmacao: {
       required: 'Confirmação obrigatória',
-      senhaConfirmacaoInvalida: 'Senhas não conferem'
+      senhaConfirmacaoInvalida: 'As senhas não conferem'
     }
   };
 
