@@ -72,7 +72,13 @@ npx json-server produtos.json
 
 #### Teste de unidade
 
-npm install -D jest@30 ts-jest@29 jest-preset-angular @types/jest
+<!-- npm install -D jest@30 ts-jest@29 jest-preset-angular @types/jest
 rmdir /s /q node_modules
-del package-lock.json
+del package-lock.json -->
+
+npm install -D vitest jsdom @vitest/coverage-v8
+npm install -D @analogjs/vitest-angular
+
 npm install
+
+npm run test

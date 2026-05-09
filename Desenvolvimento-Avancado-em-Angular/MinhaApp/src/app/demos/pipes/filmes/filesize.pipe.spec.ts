@@ -1,6 +1,7 @@
-import { FileSizePipe } from './filesize.pipe';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+
+import { FileSizePipe } from './filesize.pipe';
 
 describe('FileSizePipe', () => {
   describe('Teste Isolado', () => {
@@ -18,45 +19,45 @@ describe('FileSizePipe', () => {
 
   describe('Teste comportamental do Pipe', () => {
     @Component({
-      standalone: false,
-      template: ` Size: {{ size | filesize }} `,
+      standalone: true,
+      imports: [FileSizePipe],
+      template: ` Size: {{ size() | filesize }} `,
     })
     class TestComponent {
-      size = 123456789;
+      //size = 123456789;
+      size = signal(123456789);
     }
 
     let component: TestComponent;
     let fixture: ComponentFixture<TestComponent>;
-    let el: HTMLElement;
+    let element: HTMLElement;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        declarations: [FileSizePipe, TestComponent],
+        imports: [TestComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(TestComponent);
       component = fixture.componentInstance;
-      el = fixture.nativeElement;
+      element = fixture.nativeElement;
     });
 
     it('Deve converter bytes para MB', () => {
       fixture.detectChanges();
-
-      expect(el.textContent).toContain('Size: 117.74 MB');
-
-      component.size = 1029281;
-
+      expect(element.textContent).toContain('Size: 117.74 MB');
+      component.size.set(1029281);
       fixture.detectChanges();
-
-      expect(el.textContent).toContain('Size: 0.98 MB');
+      // component.size = 1029281;
+      // fixture.componentRef.changeDetectorRef.detectChanges();
+      expect(element.textContent).toContain('Size: 0.98 MB');
     });
 
     it('Deve converter bytes para GB', () => {
-      component.size = 1342177280;
-
+      component.size.set(1342177280);
       fixture.detectChanges();
-
-      expect(el.textContent).toContain('Size: 1.25 GB');
+      // component.size = 1342177280;
+      // fixture.componentRef.changeDetectorRef.detectChanges();
+      expect(element.textContent).toContain('Size: 1.25 GB');
     });
   });
 });
