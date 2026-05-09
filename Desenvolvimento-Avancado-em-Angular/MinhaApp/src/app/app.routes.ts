@@ -16,6 +16,7 @@ export const routes: Routes = [
 
   // lazy loading - rotas com children (subrotas)
   { path: 'produtos', loadChildren: () => import('./demos/arquitetura-componentes/produto.route').then((m) => m.PRODUTO_ROUTES) },
+  { path: 'contador', loadComponent: () => import('./demos/contador/contador').then((m) => m.Contador) },
   { path: 'filmes', loadComponent: () => import('./demos/pipes/filmes/filmes').then((m) => m.Filmes) },
   { path: 'bar', loadComponent: () => import('./demos/bar-di-zones/bar.component').then((m) => m.BarComponent) },
   { path: 'cadastro', loadComponent: () => import('./demos/reactiveForms/cadastro/cadastro').then((m) => m.Cadastro), canDeactivate: [unsavedChangesGuard] },
