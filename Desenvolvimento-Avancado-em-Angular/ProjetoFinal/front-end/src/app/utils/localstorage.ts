@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class LocalStorageUtils {
+export class LocalStorage {
   private readonly TOKEN_KEY = 'devio.token';
   private readonly USER_KEY = 'devio.user';
 
