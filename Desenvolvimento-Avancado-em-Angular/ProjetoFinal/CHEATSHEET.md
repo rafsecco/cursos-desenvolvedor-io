@@ -6,3 +6,6 @@ npm install ngx-toastr --save
 
 https://ngx-toastr.vercel.app/
 https://github.com/scttcper/ngx-toastr?tab=readme-ov-file
+
+
+ng serve --configuration staging

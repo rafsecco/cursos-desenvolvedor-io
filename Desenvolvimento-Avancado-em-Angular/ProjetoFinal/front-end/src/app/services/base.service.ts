@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { LocalStorage } from '../utils/localstorage';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 export abstract class BaseService {
   protected readonly UrlServiceV1 = environment.apiUrlv1;
