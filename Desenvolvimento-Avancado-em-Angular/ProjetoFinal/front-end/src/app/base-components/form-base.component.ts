@@ -11,14 +11,10 @@ import {
 
 export abstract class FormBaseComponent {
   protected readonly destroyRef = inject(DestroyRef);
-
   protected displayMessage: DisplayMessage = {};
-
   protected genericValidator!: GenericValidator;
-
   protected validationMessages!: ValidationMessages;
-
-  protected mudancasNaoSalvas = false;
+  public mudancasNaoSalvas = false;
 
   protected configurarMensagensValidacaoBase(validationMessages: ValidationMessages): void {
     this.validationMessages = validationMessages;

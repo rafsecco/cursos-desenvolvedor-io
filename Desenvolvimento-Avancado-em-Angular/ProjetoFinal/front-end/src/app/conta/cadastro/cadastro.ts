@@ -1,17 +1,15 @@
 import { AfterViewInit, Component, ElementRef, ViewChildren, inject } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormControlName,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
   NonNullableFormBuilder,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
-import { Usuario } from '../models/usuario';
 import { ContaService } from '../services/conta.service';
 import { CustomFormValidators } from '@utils/custom-form-validators';
 import { FormBaseComponent } from '@app/base-components/form-base.component';
@@ -26,8 +24,9 @@ interface CadastroForm {
 
 @Component({
   selector: 'app-cadastro',
-  standalone: false,
+  standalone: true,
   templateUrl: './cadastro.html',
+  imports: [ReactiveFormsModule],
 })
 export class Cadastro extends FormBaseComponent implements AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef })
