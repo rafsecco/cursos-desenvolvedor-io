@@ -1,14 +1,14 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { LocalStorage } from '../utils/localstorage';
+import { throwError, type Observable } from 'rxjs';
+
 import { environment } from '../../environments/environment';
+import { LocalStorageUtils } from '@utils/localstorage';
 
 export abstract class BaseService {
-  protected readonly UrlServiceV1 = environment.apiUrlv1;
+  protected readonly urlServiceV1 = environment.apiUrlv1;
+  protected readonly localStorageUtils = new LocalStorageUtils();
 
-  public readonly LocalStorage = new LocalStorage();
-
-  protected ObterHeaderJson() {
+  protected obterHeaderJson() {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -16,48 +16,46 @@ export abstract class BaseService {
     };
   }
 
-  protected ObterAuthHeaderJson() {
+  protected obterAuthHeaderJson() {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.LocalStorage.obterTokenUsuario()}`,
+        Authorization: `Bearer ${this.localStorageUtils.obterTokenUsuario()}`,
       }),
     };
   }
 
-  protected extractData<T>(response: { data: T }): T {
-    return response?.data;
-  }
+  /**
+   * Tratamento centralizado de erros HTTP
+   */
+  protected serviceError(response: HttpErrorResponse): Observable<never> {
+    const customErrors: string[] = [];
 
-  protected serviceError(response: HttpErrorResponse | any) {
-    const customError: string[] = [];
+    // Erro de conexão / rede
+    if (response.status === 0) {
+      customErrors.push('Não foi possível conectar ao servidor.');
+    }
 
-    const customResponse = {
+    // Erro interno da API
+    if (response.status === 500) {
+      customErrors.push(
+        'Ocorreu um erro no processamento, tente novamente mais tarde ou contate o suporte.',
+      );
+    }
+
+    if (!navigator.onLine) {
+      customErrors.push('Você está sem conexão com a internet.');
+    }
+
+    const errorResponse = {
       error: {
-        errors: [] as string[],
+        errors:
+          customErrors.length > 0 ? customErrors : (response.error?.errors ?? ['Erro inesperado']),
       },
     };
 
-    if (response instanceof HttpErrorResponse) {
-      if (response.statusText === 'Unknown Error') {
-        customError.push('Ocorreu um erro desconhecido');
+    console.error('HTTP ERROR =>', response);
 
-        response.error.errors = customError;
-      }
-    }
-
-    if (response.status === 500) {
-      customError.push(
-        'Ocorreu um erro no processamento, tente novamente mais tarde ou contate o nosso suporte.',
-      );
-
-      customResponse.error.errors = customError;
-
-      return throwError(() => customResponse);
-    }
-
-    console.error(response);
-
-    return throwError(() => response);
+    return throwError(() => errorResponse);
   }
 }

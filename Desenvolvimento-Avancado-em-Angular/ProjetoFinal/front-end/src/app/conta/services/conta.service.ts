@@ -1,11 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Observable, catchError, map } from 'rxjs';
-
+import { catchError, Observable } from 'rxjs';
 import { Usuario } from '../models/usuario';
-
-import { BaseService } from 'src/app/shared/services/base.service';
+import { BaseService } from '@services/base.service';
+import { LoginResponse } from '../models/login-response';
+import { RegistroUsuario } from '../models/registro-usuario';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +12,19 @@ import { BaseService } from 'src/app/shared/services/base.service';
 export class ContaService extends BaseService {
   private readonly http = inject(HttpClient);
 
-  registrarUsuario(usuario: Usuario): Observable<Usuario> {
+  registrarUsuario(usuario: RegistroUsuario): Observable<LoginResponse> {
     return this.http
-      .post<Usuario>(`${this.UrlServiceV1}nova-conta`, usuario, this.ObterHeaderJson())
-      .pipe(map(this.extractData), catchError(this.serviceError));
+      .post<LoginResponse>(`${this.urlServiceV1}nova-conta`, usuario, this.obterHeaderJson())
+      .pipe(catchError((error) => this.serviceError(error)));
   }
 
-  login(usuario: Usuario): Observable<Usuario> {
+  login(usuario: Usuario): Observable<LoginResponse> {
     return this.http
-      .post<Usuario>(`${this.UrlServiceV1}entrar`, usuario, this.ObterHeaderJson())
-      .pipe(map(this.extractData), catchError(this.serviceError));
+      .post<LoginResponse>(`${this.urlServiceV1}entrar`, usuario, this.obterHeaderJson())
+      .pipe(catchError((error) => this.serviceError(error)));
+  }
+
+  salvarResponseUsuario(response: LoginResponse): void {
+    this.localStorageUtils.salvarDadosLocaisUsuario(response);
   }
 }

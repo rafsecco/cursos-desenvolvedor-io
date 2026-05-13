@@ -14,11 +14,8 @@ export class MenuLogin {
   private readonly localStorageUtils = inject(LocalStorageUtils);
 
   readonly token = signal<string | null>(this.localStorageUtils.obterTokenUsuario());
-
   readonly usuario = signal<UsuarioToken | null>(this.localStorageUtils.obterUsuario());
-
   readonly usuarioLogado = computed(() => !!this.token());
-
   readonly email = computed(() => this.usuario()?.email ?? '');
 
   logout(): void {
