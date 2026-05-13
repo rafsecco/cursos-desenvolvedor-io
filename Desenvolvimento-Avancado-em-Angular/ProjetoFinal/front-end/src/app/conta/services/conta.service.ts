@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
-import { Usuario } from '../models/usuario';
 import { BaseService } from '@services/base.service';
 import { LoginResponse } from '../models/login-response';
+import { LoginUsuario } from '../models/login-usuario';
 import { RegistroUsuario } from '../models/registro-usuario';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ContaService extends BaseService {
       .pipe(catchError((error) => this.serviceError(error)));
   }
 
-  login(usuario: Usuario): Observable<LoginResponse> {
+  login(usuario: LoginUsuario): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.urlServiceV1}entrar`, usuario, this.obterHeaderJson())
       .pipe(catchError((error) => this.serviceError(error)));

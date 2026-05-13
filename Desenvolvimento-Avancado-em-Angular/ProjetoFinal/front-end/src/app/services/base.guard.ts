@@ -4,6 +4,7 @@ import { inject } from '@angular/core';
 
 import { LocalStorageUtils } from '@utils/localstorage';
 import { Claim } from '@app/conta/models/claim';
+import { UsuarioToken } from '@app/conta/models/usuario-token';
 
 export abstract class BaseGuard {
   protected readonly router = inject(Router);
@@ -21,7 +22,7 @@ export abstract class BaseGuard {
       return false;
     }
 
-    const user = this.localStorageUtils.obterUsuario();
+    const user = this.localStorageUtils.obterUsuario<UsuarioToken>();
 
     const routeClaim = routeAc.data['claim'];
 

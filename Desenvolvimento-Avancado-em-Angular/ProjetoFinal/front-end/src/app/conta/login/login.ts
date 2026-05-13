@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
 
-import { Usuario } from '../models/usuario';
+import { LoginUsuario } from '../models/login-usuario';
 import { ContaService } from '../services/conta.service';
 import { FormBaseComponent } from '@app/base-components/form-base.component';
 import { CustomFormValidators } from '@utils/custom-form-validators';
@@ -75,7 +75,7 @@ export class Login extends FormBaseComponent implements AfterViewInit {
       return;
     }
 
-    const usuario: Usuario = this.loginForm.getRawValue();
+    const usuario: LoginUsuario = this.loginForm.getRawValue();
 
     this.contaService
       .login(usuario)
