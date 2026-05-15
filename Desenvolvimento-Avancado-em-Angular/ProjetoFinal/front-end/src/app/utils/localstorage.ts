@@ -12,13 +12,18 @@ export class LocalStorageUtils {
   }
 
   obterUsuario<T>(): T | null {
-    if (!this.isLocalStorageAvailable()) {
-      return null;
-    }
+    if (!this.isLocalStorageAvailable()) return null;
 
     const user = localStorage.getItem(this.USER_KEY);
 
-    return user ? (JSON.parse(user) as T) : null;
+    if (!user || user === 'undefined' || user === 'null') return null;
+
+    try {
+      return JSON.parse(user) as T;
+    } catch {
+      localStorage.removeItem(this.USER_KEY);
+      return null;
+    }
   }
 
   salvarDadosLocaisUsuario(response: LoginResponse): void {
@@ -26,8 +31,8 @@ export class LocalStorageUtils {
       return;
     }
 
-    this.salvarTokenUsuario(response.accessToken);
-    this.salvarUsuario(response.userToken);
+    this.salvarTokenUsuario(response.data.accessToken);
+    this.salvarUsuario(response.data.userToken);
   }
 
   limparDadosLocaisUsuario(): void {
@@ -40,31 +45,31 @@ export class LocalStorageUtils {
   }
 
   obterTokenUsuario(): string | null {
-    if (!this.isLocalStorageAvailable()) {
-      return null;
-    }
+    if (!this.isLocalStorageAvailable()) return null;
 
-    return localStorage.getItem(this.TOKEN_KEY);
+    const token = localStorage.getItem(this.TOKEN_KEY);
+
+    if (!token || token === 'undefined' || token === 'null') return null;
+
+    return token;
   }
 
   salvarTokenUsuario(token: string): void {
-    if (!this.isLocalStorageAvailable()) {
-      return;
-    }
+    if (!this.isLocalStorageAvailable() || !token) return;
 
     localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   salvarUsuario<T>(user: T): void {
-    if (!this.isLocalStorageAvailable()) {
-      return;
-    }
+    if (!this.isLocalStorageAvailable() || user == null) return;
 
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 }
 
 interface LoginResponse {
-  accessToken: string;
-  userToken: unknown;
+  data: {
+    accessToken: string;
+    userToken: unknown;
+  };
 }

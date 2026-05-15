@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { BaseService } from '@services/base.service';
+import { AuthStateService } from '@services/auth-state.service';
 import { LoginResponse } from '../models/login-response';
 import { LoginUsuario } from '../models/login-usuario';
 import { RegistroUsuario } from '../models/registro-usuario';
@@ -11,6 +12,7 @@ import { RegistroUsuario } from '../models/registro-usuario';
 })
 export class ContaService extends BaseService {
   private readonly http = inject(HttpClient);
+  private readonly authState = inject(AuthStateService);
 
   registrarUsuario(usuario: RegistroUsuario): Observable<LoginResponse> {
     return this.http
@@ -26,5 +28,6 @@ export class ContaService extends BaseService {
 
   salvarResponseUsuario(response: LoginResponse): void {
     this.localStorageUtils.salvarDadosLocaisUsuario(response);
+    this.authState.atualizar(response);
   }
 }

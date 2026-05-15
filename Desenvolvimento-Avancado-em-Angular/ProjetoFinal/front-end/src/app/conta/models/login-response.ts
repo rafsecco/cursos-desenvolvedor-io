@@ -1,8 +1,19 @@
+export interface ClaimViewModel {
+  type: string;
+  value: string;
+}
+
+export interface UserToken {
+  id: string;
+  email: string;
+  claims: ClaimViewModel[];
+}
+
 export interface LoginResponse {
-  accessToken: string;
-  userToken: {
-    id: string;
-    email: string;
-    claims: string[];
+  success: boolean;
+  data: {
+    accessToken: string;
+    expiresIn: number;
+    userToken: UserToken;
   };
 }

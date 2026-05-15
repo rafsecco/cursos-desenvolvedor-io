@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChildren, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormControlName,
@@ -32,7 +32,7 @@ export class Cadastro extends FormBaseComponent implements AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef })
 
   protected readonly formInputElements!: ElementRef[];
-  protected errors: string[] = [];
+  protected readonly errors = signal<string[]>([]);
   protected readonly fb = inject(NonNullableFormBuilder);
   private readonly contaService = inject(ContaService);
   private readonly router = inject(Router);
@@ -98,7 +98,7 @@ export class Cadastro extends FormBaseComponent implements AfterViewInit {
 
     this.contaService
       .registrarUsuario(usuario)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => this.processarSucesso(response),
         error: (error) => this.processarFalha(error),
@@ -109,14 +109,14 @@ export class Cadastro extends FormBaseComponent implements AfterViewInit {
 
   private processarSucesso(response: LoginResponse): void {
     this.cadastroForm.reset();
-    this.errors = [];
+    this.errors.set([]);
 
     //this.contaService.localStorageUtils.salvarDadosLocaisUsuario(response);
     this.contaService.salvarResponseUsuario(response);
 
     const toast = this.toastr.success('Registro realizado com sucesso!', 'Bem-vindo!');
 
-    toast?.onHidden.pipe(takeUntilDestroyed()).subscribe(() => {
+    toast?.onHidden.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.router.navigate(['/home']);
     });
   }
@@ -126,7 +126,7 @@ export class Cadastro extends FormBaseComponent implements AfterViewInit {
       errors?: string[];
     };
   }): void {
-    this.errors = error.error?.errors ?? [];
+    this.errors.set(error.error?.errors ?? []);
 
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
   }

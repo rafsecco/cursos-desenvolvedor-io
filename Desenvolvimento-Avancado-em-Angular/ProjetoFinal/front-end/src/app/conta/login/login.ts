@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChildren, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormControlName,
@@ -38,7 +38,7 @@ export class Login extends FormBaseComponent implements AfterViewInit {
   private readonly route = inject(ActivatedRoute);
   private readonly toastr = inject(ToastrService);
 
-  protected errors: string[] = [];
+  protected readonly errors = signal<string[]>([]);
 
   protected readonly returnUrl = this.route.snapshot.queryParams['returnUrl'];
 
@@ -79,7 +79,7 @@ export class Login extends FormBaseComponent implements AfterViewInit {
 
     this.contaService
       .login(usuario)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => this.processarSucesso(response),
 
@@ -90,13 +90,13 @@ export class Login extends FormBaseComponent implements AfterViewInit {
   private processarSucesso(response: LoginResponse): void {
     this.loginForm.reset();
 
-    this.errors = [];
+    this.errors.set([]);
 
     this.contaService.salvarResponseUsuario(response);
 
     const toast = this.toastr.success('Login realizado com sucesso!', 'Bem-vindo!');
 
-    toast?.onHidden.pipe(takeUntilDestroyed()).subscribe(() => {
+    toast?.onHidden.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.router.navigate([this.returnUrl || '/home']);
     });
   }
@@ -106,7 +106,7 @@ export class Login extends FormBaseComponent implements AfterViewInit {
       errors?: string[];
     };
   }): void {
-    this.errors = error.error?.errors ?? [];
+    this.errors.set(error.error?.errors ?? []);
 
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
   }

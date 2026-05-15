@@ -12,7 +12,12 @@ export const routes: Routes = [
     path: 'conta',
     loadChildren: () => import('./conta/conta.route').then((m) => m.CONTA_ROUTES),
   },
+  {
+    path: 'fornecedores',
+    loadChildren: () =>
+      import('./fornecedor/fornecedor.route').then((m) => m.fornecedorRouterConfig),
+  },
 
   { path: 'nao-encontrado', component: NotFound },
-  { path: '**', component: NotFound } // Sempre por ultimo
+  { path: '**', component: NotFound }, // Sempre por ultimo
 ];
