@@ -30,3 +30,5 @@ npm install npm@latest -g
 - 10 - ~~[Protractor e2e](https://www.protractortest.org/#/) (deprecated)~~ → [Playwright](https://playwright.dev/)
 
 - [Vitest](https://vitest.dev/)
+- ~~[ngx-img-cropper](https://www.npmjs.com/package/ngx-img-cropper) (deprecated)~~
+
