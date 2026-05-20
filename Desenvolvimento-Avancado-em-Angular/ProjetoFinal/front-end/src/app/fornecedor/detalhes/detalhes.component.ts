@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { environment } from '@env/environment';
 import { Fornecedor } from '../models/fornecedor';
 import { ListaProdutosComponent } from '../produtos/lista-produtos.component';
 import { DocumentoPipe } from '@utils/documento.pipe';
@@ -19,7 +20,7 @@ export class DetalhesComponent {
   readonly enderecoMap: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
     `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
       this.enderecoCompleto,
-    )}&key=GOOGLE_MAPS_KEY_REMOVED`,
+    )}&key=${environment.googleMapsKey}`,
   );
 
   get enderecoCompleto(): string {

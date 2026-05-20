@@ -3,6 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '@env/environment';
 import { Fornecedor } from '../models/fornecedor';
 import { FornecedorService } from '../services/fornecedor.service';
 import { DocumentoPipe } from '@utils/documento.pipe';
@@ -25,7 +26,7 @@ export class ExcluirComponent {
   readonly enderecoMap: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
     `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
       this.enderecoCompleto,
-    )}&key=GOOGLE_MAPS_KEY_REMOVED`,
+    )}&key=${environment.googleMapsKey}`,
   );
 
   readonly errors = signal<string[]>([]);
