@@ -1,25 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { environment } from '@env/environment';
 import { Produto } from '../models/produto';
 import { ProdutoService } from '../services/produto.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-lista',
-  templateUrl: './lista.component.html'
+  templateUrl: './lista.component.html',
+  standalone: true,
+  imports: [RouterLink, CurrencyPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListaComponent implements OnInit {
+export class ListaComponent {
+  private readonly produtoService = inject(ProdutoService);
 
-  imagens: string = environment.imagensUrl;
+  readonly imagens = environment.imagensUrl;
+  readonly produtos = signal<Produto[]>([]);
+  readonly errorMessage = signal('');
 
-  public produtos: Produto[];
-  errorMessage: string;
-
-  constructor(private produtoService: ProdutoService) { }
-
-  ngOnInit(): void {
-    this.produtoService.obterTodos()
-      .subscribe(
-        produtos => this.produtos = produtos,
-        error => this.errorMessage);
+  constructor() {
+    this.produtoService
+      .obterTodos()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (produtos) => this.produtos.set(produtos),
+        error: () => this.errorMessage.set('Erro ao carregar produtos.'),
+      });
   }
 }

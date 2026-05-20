@@ -1,14 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { ResolveFn } from '@angular/router';
 import { Produto } from '../models/produto';
 import { ProdutoService } from './produto.service';
 
-@Injectable()
-export class ProdutoResolve implements Resolve<Produto> {
-
-    constructor(private produtoService: ProdutoService) { }
-
-    resolve(route: ActivatedRouteSnapshot) {
-        return this.produtoService.obterPorId(route.params['id']);
-    }
-}
+export const produtoResolver: ResolveFn<Produto> = (route) =>
+  inject(ProdutoService).obterPorId(route.params['id']);

@@ -1,49 +1,45 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProdutoService } from '../services/produto.service';
-
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
-
+import { environment } from '@env/environment';
 import { Produto } from '../models/produto';
-import { environment } from 'src/environments/environment';
+import { ProdutoService } from '../services/produto.service';
 
 @Component({
   selector: 'app-excluir',
-  templateUrl: './excluir.component.html'
+  templateUrl: './excluir.component.html',
+  standalone: true,
+  imports: [RouterLink, CurrencyPipe, DatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExcluirComponent  {
+export class ExcluirComponent {
+  private readonly produtoService = inject(ProdutoService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
 
-  imagens: string = environment.imagensUrl;
-  produto: Produto;
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private produtoService: ProdutoService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService) {
+  readonly imagens = environment.imagensUrl;
+  readonly produto = this.route.snapshot.data['produto'] as Produto;
+  readonly errors = signal<string[]>([]);
 
-    this.produto = this.route.snapshot.data['produto'];
-  }
-
-  public excluirProduto() {
-    this.produtoService.excluirProduto(this.produto.id)
-      .subscribe(
-      evento => { this.sucessoExclusao(evento) },
-      ()     => { this.falha() }
-      );
-  }
-
-  public sucessoExclusao(evento: any) {
-
-    const toast = this.toastr.success('Produto excluido com Sucesso!', 'Good bye :D');
-    if (toast) {
-      toast.onHidden.subscribe(() => {
-        this.router.navigate(['/produtos/listar-todos']);
+  excluirProduto(): void {
+    this.produtoService
+      .excluirProduto(this.produto.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.processarSucesso(),
+        error: () => this.toastr.error('Houve um erro no processamento!', 'Ops! :('),
       });
-    }
   }
 
-  public falha() {
-    this.toastr.error('Houve um erro no processamento!', 'Ops! :(');
+  private processarSucesso(): void {
+    const toast = this.toastr.success('Produto excluído com sucesso!', 'Good bye :D');
+    toast?.onHidden.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.router.navigate(['/produtos/listar-todos']);
+    });
   }
 }
-

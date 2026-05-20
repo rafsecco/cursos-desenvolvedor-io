@@ -1,62 +1,75 @@
 <div class="container main-container">
+	<h1>Lista de Produtos</h1>
+	<hr />
 
-    <h1>Lista de Produtos</h1>
-    <hr>
+	<p>
+		<a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']">Novo Produto</a>
+	</p>
 
-    <p>
-        <a class="btn btn-info" [routerLink]="['/produtos/adicionar-novo']">Novo Produto</a>
-    </p>
+	@if (errorMessage()) {
+		<div class="alert alert-danger">{{ errorMessage() }}</div>
+	}
 
-    <table class="table table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>
-
-                </th>
-                <th>
-                    Nome
-                </th>
-                <th>
-                    Fornecedor
-                </th>
-                <th>
-                    Valor
-                </th>
-                <th>
-                    Ativo?
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let produto of produtos">
-                <td>
-                    <img src="{{ imagens }}{{ produto.imagem }}" style="width: 70px; height: 100px">
-                </td>
-                <td>
-                    {{ produto.nome }}
-                </td>
-                <td>
-                    {{ produto.nomeFornecedor }}
-                </td>
-                <td>
-                    {{ produto.valor }}
-                </td>
-                <td>
-                    <input [checked]="produto.ativo" class="check-box" disabled="disabled" type="checkbox">
-                </td>
-                <td class="text-right">
-                    <a class="btn btn-warning" [routerLink]="['/produtos/detalhes',produto.id]">
-                        <span class="fa fa-search"></span>
-                    </a>&nbsp;
-                    <a class="btn btn-info" [routerLink]="['/produtos/editar',produto.id]">
-                        <span class="fa fa-pencil-alt"></span>
-                    </a>&nbsp;
-                    <a class="btn btn-danger" [routerLink]="['/produtos/excluir',produto.id]">
-                        <span class="fa fa-trash"></span>
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table table-hover">
+		<thead class="thead-dark">
+			<tr>
+				<th></th>
+				<th>Nome</th>
+				<th>Fornecedor</th>
+				<th>Valor</th>
+				<th>Ativo?</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (produto of produtos(); track produto.id) {
+				<tr>
+					<td>
+						<img
+							[src]="imagens + produto.imagem"
+							[alt]="produto.nome"
+							width="70"
+							height="100"
+							loading="lazy"
+						/>
+					</td>
+					<td>{{ produto.nome }}</td>
+					<td>{{ produto.nomeFornecedor }}</td>
+					<td>{{ produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</td>
+					<td>
+						<input type="checkbox" class="check-box" [checked]="produto.ativo" disabled />
+					</td>
+					<td class="text-end">
+						<a
+							class="btn btn-warning"
+							[routerLink]="['/produtos/detalhes', produto.id]"
+							aria-label="Detalhes do produto"
+						>
+							<span class="fa fa-search"></span>
+						</a>
+						&nbsp;
+						<a
+							class="btn btn-info"
+							[routerLink]="['/produtos/editar', produto.id]"
+							aria-label="Editar produto"
+						>
+							<span class="fa fa-pencil-alt"></span>
+						</a>
+						&nbsp;
+						<a
+							class="btn btn-danger"
+							[routerLink]="['/produtos/excluir', produto.id]"
+							aria-label="Excluir produto"
+						>
+							<span class="fa fa-trash"></span>
+						</a>
+					</td>
+				</tr>
+			} @empty {
+				<tr>
+					<td colspan="6" class="text-center">Nenhum produto encontrado.</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>

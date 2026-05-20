@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { environment } from '@env/environment';
 import { Produto } from '../models/produto';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-detalhes',
-  templateUrl: './detalhes.component.html'
+  templateUrl: './detalhes.component.html',
+  standalone: true,
+  imports: [RouterLink, CurrencyPipe, DatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalhesComponent {
+  private readonly route = inject(ActivatedRoute);
 
-  imagens: string = environment.imagensUrl;
-  produto: Produto;
-
-  constructor(private route: ActivatedRoute) {
-
-    this.produto = this.route.snapshot.data['produto'];
-  }
-
+  readonly imagens = environment.imagensUrl;
+  readonly produto = this.route.snapshot.data['produto'] as Produto;
 }
