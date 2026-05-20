@@ -1,4 +1,5 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { isDevMode } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 
 import { environment } from '@env/environment';
@@ -52,7 +53,10 @@ export abstract class BaseService {
     const errors =
       customErrors.length > 0 ? customErrors : (response.error?.errors ?? ['Erro inesperado']);
 
-    console.error('HTTP ERROR =>', response);
+    if (isDevMode()) {
+      console.error('HTTP ERROR =>', response);
+      console.error('Erros da API:', errors);
+    }
 
     return throwError(() => ({
       error: {

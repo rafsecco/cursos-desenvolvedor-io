@@ -30,7 +30,7 @@ export class FornecedorService extends BaseService {
   atualizarEndereco(endereco: Endereco): Observable<Endereco> {
     return this.http
       .put<Endereco>(
-        `${this.urlServiceV1}enderecos/${endereco.id}`,
+        `${this.urlServiceV1}fornecedores/endereco/${endereco.id}`,
         endereco,
         super.obterAuthHeaderJson(),
       )

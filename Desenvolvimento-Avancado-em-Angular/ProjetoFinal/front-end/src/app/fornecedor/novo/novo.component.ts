@@ -177,11 +177,27 @@ export class NovoComponent extends FormBaseComponent implements OnInit, AfterVie
   adicionarFornecedor(): void {
     if (!this.fornecedorForm.dirty || !this.fornecedorForm.valid) return;
 
-    this.fornecedor = { ...this.fornecedor, ...this.fornecedorForm.value };
+    const form = this.fornecedorForm.getRawValue();
+
+    this.fornecedor = {
+      ...this.fornecedor,
+      nome: form.nome,
+      documento: StringUtils.somenteNumeros(form.documento),
+      ativo: form.ativo,
+      tipoFornecedor: parseInt(form.tipoFornecedor, 10),
+      endereco: {
+        ...this.fornecedor.endereco,
+        logradouro: form.endereco.logradouro,
+        numero: form.endereco.numero,
+        complemento: form.endereco.complemento,
+        bairro: form.endereco.bairro,
+        cep: StringUtils.somenteNumeros(form.endereco.cep),
+        cidade: form.endereco.cidade,
+        estado: form.endereco.estado,
+      },
+    };
+
     this.formResult.set(JSON.stringify(this.fornecedor));
-    this.fornecedor.endereco.cep = StringUtils.somenteNumeros(this.fornecedor.endereco.cep);
-    this.fornecedor.documento = StringUtils.somenteNumeros(this.fornecedor.documento);
-    this.fornecedor.tipoFornecedor = Number(this.fornecedor.tipoFornecedor);
 
     this.fornecedorService
       .novoFornecedor(this.fornecedor)
