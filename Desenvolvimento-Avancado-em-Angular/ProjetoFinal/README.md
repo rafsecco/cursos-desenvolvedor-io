@@ -187,6 +187,93 @@ O projeto foi migrado do Angular 8 para o Angular 21 aplicando os padrões moder
 
 ---
 
+## Docker
+
+### Pré-requisito
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e em execução
+
+---
+
+### Subir tudo com um comando
+
+Na pasta `ProjetoFinal/` (raiz do projeto):
+
+```bash
+# Primeira execução — faz o build das imagens e sobe todos os serviços
+docker compose up --build
+
+# Execuções subsequentes (imagens já construídas)
+docker compose up
+
+# Em background (detached)
+docker compose up -d
+```
+
+Serviços iniciados automaticamente:
+
+| Serviço | URL | Descrição |
+|---|---|---|
+| `frontend` | http://localhost:8080 | Angular + NGINX |
+| `api` | http://localhost:5000 | ASP.NET Core 3.1 |
+| `sqlserver` | localhost:1433 | SQL Server 2022 Developer |
+| `init-db` | — | Cria o banco na primeira vez |
+
+> O `init-db` roda o script `back-end/sql/criarbanco.sql` automaticamente e encerra.  
+> Nas próximas subidas, os dados persistem no volume `minhaapicore-sqlserver-data`.
+
+---
+
+### Parar e remover
+
+```bash
+# Parar os containers (dados persistem no volume)
+docker compose down
+
+# Parar E remover o volume do banco (reseta os dados)
+docker compose down -v
+```
+
+---
+
+### Logs e diagnóstico
+
+```bash
+# Logs de todos os serviços
+docker compose logs -f
+
+# Logs de um serviço específico
+docker compose logs -f api
+docker compose logs -f frontend
+
+# Status dos containers
+docker compose ps
+```
+
+---
+
+### Executar containers individualmente (sem Compose)
+
+**Back-end:**
+```bash
+cd back-end
+docker build -t minhaapicore-api .
+docker run -d --name minhaapicore-api -p 5000:80 \
+  -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=MinhaApiCore;User Id=sa;Password=MinhaS3nh@Forte!;TrustServerCertificate=True;MultipleActiveResultSets=True" \
+  minhaapicore-api
+```
+
+**Front-end:**
+```bash
+cd front-end
+docker build -t minhaapicore-frontend .
+docker run -d --name minhaapicore-frontend -p 8080:80 minhaapicore-frontend
+```
+
+> A URL da API (`http://localhost:5000`) é compilada no build Angular via `environment.ts`.  
+> Para apontar para outro host, altere o arquivo antes de executar `docker build`.
+
+---
+
 ## Segurança
 
 - Autenticação via **JWT Bearer** (gerenciado pelo interceptor `authInterceptor`)
