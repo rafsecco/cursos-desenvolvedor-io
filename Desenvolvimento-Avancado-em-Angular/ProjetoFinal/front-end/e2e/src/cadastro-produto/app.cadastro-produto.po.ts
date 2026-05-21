@@ -28,7 +28,11 @@ export class AppProdutoPage extends AppBasePage {
   async selecionarFornecedor(): Promise<void> {
     const select = this.page.locator('select#fornecedorId');
 
-    // Aguarda ao menos 1 fornecedor carregar além do placeholder
+    // Clica no select para disparar a detecção de mudanças do Angular.
+    // Com SSR/hydration, o ciclo de CD não roda automaticamente após o HTTP
+    // responder — um evento de usuário é necessário para acionar o re-render.
+    await select.click();
+
     await this.page.waitForSelector('select#fornecedorId option:nth-child(2)', {
       timeout: 10000,
     }).catch(() => {

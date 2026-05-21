@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
@@ -31,6 +32,7 @@ export class NovoComponent extends ProdutoBaseComponent implements OnInit, After
   private readonly produtoService = inject(ProdutoService);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   previewUrl: string | null = null;
   imagemBase64: string | null = null;
@@ -44,7 +46,10 @@ export class NovoComponent extends ProdutoBaseComponent implements OnInit, After
     this.produtoService
       .obterFornecedores()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((fornecedores) => (this.fornecedores = fornecedores));
+      .subscribe((fornecedores) => {
+        this.fornecedores.set(fornecedores);
+        this.cdr.detectChanges();
+      });
 
     this.produtoForm = this.fb.group({
       fornecedorId: ['', Validators.required],

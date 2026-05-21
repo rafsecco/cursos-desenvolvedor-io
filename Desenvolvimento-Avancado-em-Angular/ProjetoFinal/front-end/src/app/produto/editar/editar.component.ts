@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
@@ -33,6 +34,7 @@ export class EditarComponent extends ProdutoBaseComponent implements OnInit, Aft
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   readonly imagens = environment.imagensUrl;
 
@@ -50,7 +52,10 @@ export class EditarComponent extends ProdutoBaseComponent implements OnInit, Aft
     this.produtoService
       .obterFornecedores()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((fornecedores) => (this.fornecedores = fornecedores));
+      .subscribe((fornecedores) => {
+        this.fornecedores.set(fornecedores);
+        this.cdr.detectChanges();
+      });
 
     this.produtoForm = this.fb.group({
       fornecedorId: ['', Validators.required],

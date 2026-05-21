@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Home } from './navegacao/home/home';
 import { NotFound } from './navegacao/not-found/not-found';
+import { AcessoNegadoComponent } from './navegacao/acesso-negado/acesso-negado';
 
 export const routes: Routes = [
   // carregamento imediato
@@ -24,5 +25,6 @@ export const routes: Routes = [
   },
 
   { path: 'nao-encontrado', component: NotFound },
+  { path: 'acesso-negado', component: AcessoNegadoComponent },
   { path: '**', component: NotFound }, // Sempre por ultimo
 ];

@@ -5,11 +5,15 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prd": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:front-end": "node dist/front-end/server/server.mjs",
     "e2e": "playwright test --config=e2e/playwright.config.ts",
-    "e2e:produto": "playwright test --config=e2e/playwright.config.ts --grep 'cadastro'"
+    "e2e:headed": "playwright test --config=e2e/playwright.config.ts --headed",
+    "e2e:ui": "playwright test --config=e2e/playwright.config.ts --ui",
+    "e2e:produto": "playwright test --config=e2e/playwright.config.ts e2e/src/cadastro-produto/app.cadastro-produto.spec.ts",
+    "e2e:produto:headed": "playwright test --config=e2e/playwright.config.ts e2e/src/cadastro-produto/app.cadastro-produto.spec.ts --headed"
   },
   "private": true,
   "packageManager": "npm@11.12.1",

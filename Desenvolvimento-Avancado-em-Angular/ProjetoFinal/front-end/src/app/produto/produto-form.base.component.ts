@@ -5,9 +5,9 @@ import { Produto, Fornecedor } from './models/produto';
 
 export abstract class ProdutoBaseComponent extends FormBaseComponent {
   readonly errors = signal<string[]>([]);
+  readonly fornecedores = signal<Fornecedor[]>([]);
 
   produto: Produto = {} as Produto;
-  fornecedores: Fornecedor[] = [];
   produtoForm!: FormGroup;
 
   constructor() {
