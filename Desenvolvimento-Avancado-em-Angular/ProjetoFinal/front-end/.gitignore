@@ -43,6 +43,13 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
+# Playwright — gerados relativos ao playwright.config.ts (e2e/)
+/e2e/playwright-report/
+/e2e/test-results/
+# Segurança: ignorar caso gerem na raiz do front-end também
+/playwright-report/
+/test-results/
+
 # Environment files with real secrets (use environment.*.ts.example as template)
 src/environments/environment.development.ts
 src/environments/environment.staging.ts

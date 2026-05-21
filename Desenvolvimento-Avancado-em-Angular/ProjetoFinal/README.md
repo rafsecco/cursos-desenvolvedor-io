@@ -1,36 +1,195 @@
+# Projeto Final — Desenvolvimento Avançado em Angular
 
+Aplicação full-stack de gerenciamento de fornecedores e produtos, desenvolvida como projeto final do curso **Desenvolvimento Avançado em Angular** da [Desenvolvedor.io](https://desenvolvedor.io).
 
-# ProjetoFinal
+## Stack
 
-## Como executar o projeto
+| Camada | Tecnologia |
+|---|---|
+| Front-end | Angular 21 · TypeScript · Bootstrap 5 |
+| Back-end | ASP.NET Core 3.1 · Identity · JWT |
+| Banco de dados | SQL Server (LocalDB para desenvolvimento) |
+| Testes E2E | Playwright |
+| SSR | Angular SSR + Express |
 
-1. Abra um terminal na pasta `ProjetoFinal\back-end`.
-2. Restaure as dependências do back-end:
-   ```powershell
-   dotnet restore
-   ```
-3. Crie o banco de dados SQL Server local usando o script SQL:
-   ```powershell
-   sqlcmd -S localhost -i sql\criarbanco.sql
-   ```
-   Ou execute `ProjetoFinal\back-end\sql\criarbanco.sql` no SQL Server Management Studio (SSMS).
-4. Execute a API:
-   ```powershell
-   dotnet run --project src\DevIO.Api
-   ```
+---
 
-5. Abra outro terminal e vá para a pasta do front-end:
-   ```powershell
-   cd front-end
-   ```
-6. Instale as dependências do front-end:
-   ```powershell
-   npm install
-   ```
-7. Execute o front-end:
-   ```powershell
-   npm start
-   ```
+## Estrutura do Projeto
 
-> Certifique-se de que o SQL Server local está em execução e a string de conexão está correta em `src\DevIO.Api\appsettings.Development.json` ou no arquivo de configuração correspondente.
+```
+ProjetoFinal/
+├── back-end/               # API .NET
+│   ├── src/
+│   │   ├── DevIO.Api/      # Controllers, ViewModels, Configuração
+│   │   ├── DevIO.Business/ # Entidades, Interfaces, Serviços
+│   │   └── DevIO.Data/     # Repositórios, DbContext, Migrations
+│   └── sql/
+│       └── criarbanco.sql  # Script de criação do banco
+└── front-end/              # SPA Angular 21
+    ├── src/app/
+    │   ├── conta/          # Autenticação (login, cadastro)
+    │   ├── fornecedor/     # CRUD de fornecedores + endereços
+    │   ├── produto/        # CRUD de produtos + imagens
+    │   ├── navegacao/      # Menu, Header, Footer, Home
+    │   └── services/       # Interceptors, AuthStateService
+    └── e2e/                # Testes E2E com Playwright
+```
 
+---
+
+## Pré-requisitos
+
+- [.NET SDK 3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
+- [SQL Server LocalDB](https://learn.microsoft.com/sql/database-engine/configure-windows/sql-server-express-localdb) ou SQL Server completo
+- [Node.js 20+](https://nodejs.org)
+- [Angular CLI 21](https://angular.dev/tools/cli): `npm install -g @angular/cli`
+
+---
+
+## Como Executar
+
+### 1. Back-end (.NET)
+
+```bash
+cd back-end
+
+# Restaurar dependências
+dotnet restore
+
+# Criar o banco de dados
+sqlcmd -S "(localdb)\mssqllocaldb" -i sql/criarbanco.sql
+# Ou execute o script no SQL Server Management Studio (SSMS)
+
+# Iniciar a API (http://localhost:5000)
+dotnet run --project src/DevIO.Api
+```
+
+> A string de conexão padrão usa `(localdb)\mssqllocaldb`. Para alterar, edite  
+> `src/DevIO.Api/appsettings.Development.json`.
+
+### 2. Front-end (Angular)
+
+```bash
+cd front-end
+
+# Instalar dependências
+npm install
+
+# Configurar variáveis de ambiente (ver seção abaixo)
+cp src/environments/environment.development.ts.example \
+   src/environments/environment.development.ts
+# Edite o arquivo e preencha googleMapsKey com sua chave
+
+# Iniciar o servidor de desenvolvimento (http://localhost:4200)
+npm start
+```
+
+---
+
+## Variáveis de Ambiente
+
+O arquivo `src/environments/environment.development.ts` **não é commitado** (está no `.gitignore`).  
+Use o template como base:
+
+```ts
+// src/environments/environment.development.ts
+export const environment = {
+  production: false,
+  apiUrlv1: 'http://localhost:5000/api/v1/',
+  imagensUrl: 'http://localhost:5000/',
+  googleMapsKey: 'SUA_CHAVE_GOOGLE_MAPS_AQUI',
+};
+```
+
+> Crie uma chave em [console.cloud.google.com](https://console.cloud.google.com) →  
+> APIs & Services → Credentials → Maps Embed API.
+
+---
+
+## Scripts Disponíveis (front-end)
+
+| Comando | Descrição |
+|---|---|
+| `npm start` | Servidor de desenvolvimento com hot-reload |
+| `npm run build` | Build de produção (`dist/`) |
+| `npm run watch` | Build incremental em modo desenvolvimento |
+| `npm test` | Testes unitários com Vitest |
+| `npm run e2e` | Testes E2E completos com Playwright |
+| `npm run e2e:produto` | Apenas testes do módulo de produto |
+
+---
+
+## Módulos da Aplicação
+
+### Conta
+- Cadastro de novo usuário
+- Login com JWT
+- Gerenciamento de sessão via `AuthStateService` (signals)
+
+### Fornecedores
+- Listagem, criação, edição e exclusão
+- Edição de endereço via modal (ng-bootstrap)
+- Busca automática de endereço por CEP (ViaCEP)
+- Visualização de localização no Google Maps
+- Listagem de produtos do fornecedor
+
+### Produtos
+- Listagem, criação, edição e exclusão
+- Upload e preview de imagem (FileReader nativo)
+- Formatação de valor monetário com `ngx-mask`
+- Associação com fornecedor
+
+---
+
+## Testes E2E (Playwright)
+
+```bash
+cd front-end
+
+# Executar todos os testes (app deve estar rodando na porta 4200)
+npm run e2e
+
+# Executar apenas testes de produto
+npm run e2e:produto
+
+# Modo debug (browser visível)
+npx playwright test --config=e2e/playwright.config.ts --headed
+
+# Relatório HTML
+npx playwright show-report
+```
+
+Os testes estão em `e2e/src/` e seguem o padrão **Page Object Model**:
+
+```
+e2e/src/
+├── app.base.po.ts                           # Base: login, navegação
+└── cadastro-produto/
+    ├── app.cadastro-produto.po.ts           # Page Object de produtos
+    ├── app.cadastro-produto.spec.ts         # Specs dos testes
+    └── imagem_teste.jpg                     # Fixture de imagem
+```
+
+---
+
+## Arquitetura Angular 21
+
+O projeto foi migrado do Angular 8 para o Angular 21 aplicando os padrões modernos:
+
+- **Standalone Components** — sem NgModules nas features
+- **Signals** — estado local reativo (`signal`, `computed`, `effect`)
+- **Control Flow Syntax** — `@if`, `@for`, `@switch` em vez de `*ngIf`/`*ngFor`
+- **Functional Guards/Resolvers** — `CanActivateFn`, `ResolveFn`
+- **`inject()`** — injeção de dependência sem construtores
+- **`takeUntilDestroyed`** — gerenciamento de subscriptions sem `ngOnDestroy`
+- **HTTP Interceptors funcionais** — auth e tratamento de erros via `withInterceptors`
+- **SSR** — Server-Side Rendering com `@angular/ssr`
+
+---
+
+## Segurança
+
+- Autenticação via **JWT Bearer** (gerenciado pelo interceptor `authInterceptor`)
+- Autorização por **Claims** (`FornecedorGuard`, `ProdutoGuard`)
+- Variáveis sensíveis (Google Maps API Key) em arquivos de environment **não commitados**
+- `errorInterceptor` global: redireciona para login em respostas 401 e para acesso negado em 403
