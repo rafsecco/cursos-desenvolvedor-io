@@ -1,0 +1,27 @@
+<div class="container main-container">
+	<h1>Filmes</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Nome</th>
+				<th>Data Lançamento</th>
+				<th>Valor</th>
+				<th>Tamanho</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@for (filme of filmes(); track $index) {
+				<tr>
+					<td><img [src]="filme.imagem | imageformater: 'default' : true" style="padding-bottom: 5px" /></td>
+					<td>{{ filme.nome | titlecase }}</td>
+					<td>{{ filme.dataLancamento | date: 'dd/MM/yyyy' }}</td>
+					<td>{{ filme.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</td>
+					<td>{{ filme.tamanho | filesize }}</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,15 @@
+<div class="container main-container">
+	<div class="row mb-4">
+		<div class="col-12">
+			<div class="d-flex gap-2">
+				<input type="text" class="form-control" placeholder="Nova tarefa" [ngModel]="newTask()" (ngModelChange)="newTask.set($event)" />
+				<button class="btn btn-primary" (click)="addTask()">Adicionar</button>
+			</div>
+		</div>
+	</div>
+	<div class="row text-center">
+		<app-tasks class="col-md-4"></app-tasks>
+		<app-tasks-iniciadas class="col-md-4"></app-tasks-iniciadas>
+		<app-tasks-finalizadas class="col-md-4"></app-tasks-finalizadas>
+	</div>
+</div>

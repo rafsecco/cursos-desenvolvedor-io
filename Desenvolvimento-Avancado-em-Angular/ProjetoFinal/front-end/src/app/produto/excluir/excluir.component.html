@@ -1,0 +1,58 @@
+<div class="container main-container">
+	<h4>Excluir {{ produto.nome }}</h4>
+	<br />
+	<h5>Você tem certeza disso?</h5>
+
+	@if (errors().length > 0) {
+		<div class="alert alert-danger">
+			<ul>
+				@for (error of errors(); track $index) {
+					<li>{{ error }}</li>
+				}
+			</ul>
+		</div>
+	}
+
+	<div class="row">
+		<div class="col-md-4">
+			<img
+				[src]="imagens + produto.imagem"
+				[alt]="produto.nome"
+				style="width: 300px; height: 428px; object-fit: cover"
+				loading="lazy"
+			/>
+		</div>
+
+		<div class="col-md-6">
+			<dl>
+				<dt>Fornecedor</dt>
+				<dd>{{ produto.nomeFornecedor }}</dd>
+
+				<dt>Nome</dt>
+				<dd>{{ produto.nome }}</dd>
+
+				<dt>Descrição</dt>
+				<dd>{{ produto.descricao }}</dd>
+
+				<dt>Valor</dt>
+				<dd>{{ produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</dd>
+
+				<dt>Data de Cadastro</dt>
+				<dd>{{ produto.dataCadastro | date: 'dd/MM/yyyy' }}</dd>
+
+				<dt>Ativo?</dt>
+				<dd>
+					<input type="checkbox" class="check-box" [checked]="produto.ativo" disabled />
+				</dd>
+			</dl>
+
+			<div>
+				<button type="button" class="btn btn-danger" (click)="excluirProduto()">
+					Excluir
+				</button>
+				&nbsp;
+				<a class="btn btn-info" [routerLink]="['/produtos/listar-todos']">Voltar</a>
+			</div>
+		</div>
+	</div>
+</div>

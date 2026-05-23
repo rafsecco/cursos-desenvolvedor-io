@@ -1,0 +1,60 @@
+.task-list {
+  background: #fff;
+  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.task-list h3 {
+  background: #552075;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 0rem !important;
+}
+
+/* 🔥 Aqui está a mágica */
+.task-list td {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+/* Nome da task */
+.task-name {
+  color: #807d82;
+}
+
+/* Container dos ícones */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Ícones */
+.task-list__finalizado,
+.task-list__iniciado,
+.task-list__retroceder,
+.task-list__remover {
+  width: 22px;
+  height: 20px;
+  cursor: pointer;
+  background-size: 20px 20px;
+}
+
+/* Imagens específicas */
+.task-list__finalizado {
+  background: url(/assets/parar_ativo.png) no-repeat center;
+}
+
+.task-list__iniciado {
+  background: url(/assets/iniciar_ativo.png) no-repeat center;
+}
+
+.task-list__retroceder {
+  background: url(/assets/retroceder_ativo.png) no-repeat center;
+}
+
+.task-list__remover {
+  background: url(/assets/lixo.png) no-repeat center;
+}

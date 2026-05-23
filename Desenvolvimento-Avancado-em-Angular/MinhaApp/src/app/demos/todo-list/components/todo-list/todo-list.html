@@ -1,0 +1,37 @@
+<div class="task-list">
+	<h3>
+		<ng-content></ng-content>
+	</h3>
+
+	<table class="table table-striped">
+		<tbody>
+			@for (item of list(); track item.id) {
+				<tr>
+					<td>
+						<span class="task-name">{{ item.nome }}</span>
+
+						<div class="actions">
+							@if (!item.finalizado && item.iniciado) {
+								<span class="task-list__finalizado" (click)="toggleItem($index, 'finalizar')"></span>
+							}
+
+							@if (!item.finalizado && !item.iniciado) {
+								<span class="task-list__iniciado" (click)="toggleItem($index, 'iniciar')"></span>
+							}
+
+							@if (item.finalizado && !item.iniciado) {
+								<span class="task-list__retroceder" (click)="toggleItem($index, 'retomar')"></span>
+							}
+
+							@if (!item.finalizado && item.iniciado) {
+								<span class="task-list__retroceder" (click)="toggleItem($index, 'cancelar')"></span>
+							}
+
+							<span class="task-list__remover" (click)="removeItem(item.id)"></span>
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,7 @@
+// Copie este arquivo para environment.development.ts e preencha as chaves
+export const environment = {
+  production: false,
+  apiUrlv1: 'http://localhost:5000/api/v1/',
+  imagensUrl: 'http://localhost:5000/',
+  googleMapsKey: 'SUA_CHAVE_GOOGLE_MAPS_AQUI',
+};

@@ -1,0 +1,87 @@
+<div class="container main-container">
+	<h1>Cadastro</h1>
+
+	<form [formGroup]="cadastroForm" (ngSubmit)="adicionarConta()" novalidate>
+		<h4>Crie sua conta</h4>
+
+		<hr />
+
+		@if (errors().length > 0) {
+			<div class="alert alert-danger">
+				<h3 id="msgRetorno">Opa! Alguma coisa não deu certo:</h3>
+
+				<ul>
+					@for (error of errors(); track error) {
+						<li>{{ error }}</li>
+					}
+				</ul>
+			</div>
+		}
+
+		<div class="mb-3">
+			<label for="email" class="form-label"> E-mail </label>
+
+			<input
+				id="email"
+				type="email"
+				class="form-control"
+				placeholder="E-mail (requerido)"
+				formControlName="email"
+				[class.is-invalid]="displayMessage['email']"
+			/>
+
+			@if (displayMessage['email']) {
+				<div class="invalid-feedback d-block">
+					{{ displayMessage['email'] }}
+				</div>
+			}
+		</div>
+
+		<div class="mb-3">
+			<label for="password" class="form-label"> Senha </label>
+
+			<input
+				id="password"
+				type="password"
+				class="form-control"
+				placeholder="Senha (requerido)"
+				formControlName="password"
+				[class.is-invalid]="displayMessage['password']"
+			/>
+
+			@if (displayMessage['password']) {
+				<div class="invalid-feedback d-block">
+					{{ displayMessage['password'] }}
+				</div>
+			}
+		</div>
+
+		<div class="mb-4">
+			<label for="confirmPassword" class="form-label"> Confirme a senha </label>
+
+			<input
+				id="confirmPassword"
+				type="password"
+				class="form-control"
+				placeholder="Confirme a senha"
+				formControlName="confirmPassword"
+				[class.is-invalid]="displayMessage['confirmPassword']"
+			/>
+
+			@if (displayMessage['confirmPassword']) {
+				<div class="invalid-feedback d-block">
+					{{ displayMessage['confirmPassword'] }}
+				</div>
+			}
+		</div>
+
+		<button
+			id="Registrar"
+			type="submit"
+			class="btn btn-success"
+			[disabled]="cadastroForm.invalid"
+		>
+			Registrar
+		</button>
+	</form>
+</div>

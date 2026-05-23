@@ -1,0 +1,35 @@
+<div class="container main-container">
+	<div class="card h-100">
+		<div style="align-content: center">
+			@if (produto(); as prod) {
+				<img src="/assets/{{ prod.imagem }}" height="164px" width="253px" alt="" />
+			}
+		</div>
+
+		@if (produto(); as prod) {
+			<h4 class="card-title">{{ prod.nome | titlecase }}</h4>
+
+			@switch (prod.ativo) {
+				@case (true) {
+					<p>Em estoque</p>
+				}
+				@case (false) {
+					<p>Fora de estoque</p>
+				}
+			}
+
+			@if (prod.ativo) {
+				<div class="card-body">
+					<div>
+						<h4>{{ prod.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}</h4>
+						<ng-content select=".corre"></ng-content>
+					</div>
+				</div>
+			}
+		}
+
+		<div class="card-footer">
+			<a href="javascript:void(0)" (click)="salvar()" class="btn btn-primary">Salvar</a>
+		</div>
+	</div>
+</div>

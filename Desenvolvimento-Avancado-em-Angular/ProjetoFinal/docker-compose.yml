@@ -1,0 +1,72 @@
+services:
+
+  # ─── SQL Server ────────────────────────────────────────────────────────────
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: minhaapicore-sqlserver
+    environment:
+      SA_PASSWORD: "MinhaS3nh@Forte!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  # ─── Criação do banco (roda uma única vez) ──────────────────────────────────
+  init-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: minhaapicore-init-db
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    volumes:
+      - ./back-end/sql:/sql:ro
+    environment:
+      SA_PASSWORD: "MinhaS3nh@Forte!"
+    entrypoint: ["/bin/bash", "/sql/init-db.sh"]
+    restart: "no"
+
+  # ─── API .NET Core 3.1 ─────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    container_name: minhaapicore-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: >
+        Server=sqlserver,1433;
+        Database=MinhaApiCore;
+        User Id=sa;
+        Password=MinhaS3nh@Forte!;
+        TrustServerCertificate=True;
+        MultipleActiveResultSets=True
+    ports:
+      - "5000:80"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+
+  # ─── Front-end Angular + NGINX ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: minhaapicore-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  sqlserver-data:
+    name: minhaapicore-sqlserver-data
