@@ -34,9 +34,15 @@ cp src/environments/environment.development.ts.example \
 | `npm start` | Dev server com hot-reload em `http://localhost:4200` |
 | `npm run build` | Build de produção em `dist/` |
 | `npm run watch` | Build incremental (dev) |
-| `npm test` | Testes unitários com Vitest |
+| `npm test` | Todos os testes unitários |
+| `npm run test:watch` | Testes unitários em modo watch |
+| `npm run test:utils` | Validators e validação genérica |
+| `npm run test:services` | Interceptors, AuthState e BaseGuard |
+| `npm run test:conta` | Autenticação (login, cadastro, service, guards) |
+| `npm run test:produto` | Módulo de produtos |
+| `npm run test:fornecedor` | Módulo de fornecedores |
 | `npm run e2e` | Todos os testes E2E (Playwright) |
-| `npm run e2e:produto` | Testes do módulo produto |
+| `npm run e2e:produto` | Testes E2E do módulo produto |
 
 ---
 
@@ -53,7 +59,7 @@ src/
 │   ├── services/               # AuthInterceptor, ErrorInterceptor, AuthStateService, BaseGuard
 │   └── utils/                  # StringUtils, CurrencyUtils, DocumentoPipe, LocalStorageUtils
 ├── environments/
-│   ├── environment.ts                      # Produção (commitado, sem chaves)
+│   ├── environment.ts                      # Produção (gitignored)
 │   ├── environment.development.ts          # Desenvolvimento (gitignored)
 │   └── environment.development.ts.example # Template para novos devs
 e2e/
@@ -114,6 +120,42 @@ export const meuResolver: ResolveFn<Entidade> = (route) =>
 | `ngx-spinner` | 21.x | Loading spinner |
 | `ngx-mask` | 21.x | Máscara de valor monetário |
 | `@playwright/test` | 1.60.x | Testes E2E |
+
+---
+
+## Testes Unitários
+
+Runner: **Vitest** integrado ao Angular CLI via `@angular/build:unit-test`.
+
+```bash
+npm test              # todos os testes (78)
+npm run test:watch    # modo watch — re-executa ao salvar
+```
+
+### Por categoria
+
+```bash
+npm run test:utils        # CustomFormValidators + GenericValidator
+npm run test:services     # authInterceptor, errorInterceptor, AuthStateService, BaseGuard
+npm run test:conta        # Login, Cadastro, ContaService, loginGuard, cadastroGuard
+npm run test:produto      # ListaComponent, NovoComponent, DetalhesComponent
+npm run test:fornecedor   # ListaComponent, NovoComponent, FornecedorService (+ ViaCEP)
+```
+
+### Cobertura por área
+
+| Área | Casos cobertos |
+|---|---|
+| `CustomFormValidators` | `rangeLength`: vazio, dentro do range, abaixo, acima. `matchValues`: iguais, diferentes, parent null |
+| `GenericValidator` | Campo pristine, tocado inválido, tocado válido, controle sem mensagem, FormGroup aninhado |
+| `AuthStateService` | Signals `logado`/`email`/`token`, `atualizar()`, `limpar()`, inicialização via localStorage |
+| `authInterceptor` | Adiciona Bearer token, sem token, URL externa (ViaCEP), plataforma server (SSR) |
+| `errorInterceptor` | 401 → limpa auth + redireciona login; 403 → acesso-negado; outros erros propagados |
+| `BaseGuard` | Sem token, com token sem claim, claim tipo errado, valor errado, claim correta |
+| `loginGuard` | Redireciona para `/home` se já logado, permite acesso se não logado |
+| `cadastroGuard` | Permite saída sem mudanças; chama `confirm()` com mudanças; respeita cancelamento |
+| `ContaService` | POST `/nova-conta`, POST `/entrar`, `salvarResponseUsuario` (token + usuário no localStorage) |
+| `FornecedorService` | GET todos, GET por ID, POST, PUT, DELETE, `consultarCep` (sucesso e erro) |
 
 ---
 

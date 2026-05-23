@@ -31,7 +31,7 @@ describe('NovoComponent', () => {
             success: () => ({
               onHidden: of(true),
             }),
-            error: jasmine.createSpy(),
+            error: vi.fn(),
           },
         },
       ],
