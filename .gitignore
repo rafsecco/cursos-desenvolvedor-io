@@ -1,3 +1,4 @@
 .env*
 !.env.example
 !**/.env.example
+Desenvolvimento-Avancado-em-Angular/ProjetoFinal/front-end/src/environments/environment.ts

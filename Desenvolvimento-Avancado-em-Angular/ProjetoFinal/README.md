@@ -86,6 +86,58 @@ npm start
 
 ---
 
+## Acesso ao Sistema
+
+O banco de dados é criado apenas com a estrutura — **sem usuários pré-cadastrados**.
+
+### Primeiro acesso
+
+1. Acesse `http://localhost:4200` (dev) ou `http://localhost:8080` (Docker)
+2. Clique em **Crie sua conta** e registre um novo usuário
+3. Faça login com as credenciais cadastradas
+
+> O usuário recém-criado **não tem permissão** para gerenciar fornecedores e produtos por padrão.  
+> É necessário adicionar as claims de autorização via SQL.
+
+### Adicionar permissões ao usuário
+
+Execute o script de seed (substitua o e-mail pelo cadastrado):
+
+```sql
+USE [MinhaApiCore];
+
+DECLARE @UserId NVARCHAR(450);
+SELECT @UserId = Id FROM AspNetUsers WHERE Email = 'seu@email.com';
+
+INSERT INTO AspNetUserClaims (UserId, ClaimType, ClaimValue) VALUES
+    (@UserId, 'Fornecedor', 'Adicionar,Atualizar,Excluir'),
+    (@UserId, 'Produto',    'Adicionar,Atualizar,Excluir');
+```
+
+Após executar o SQL, **faça logout e login novamente** para o novo JWT incluir as claims.
+
+### Usuário de teste (E2E)
+
+O arquivo `e2e/seed.sql` cria automaticamente o usuário de teste com todas as permissões e dados de exemplo:
+
+| Campo | Valor |
+|---|---|
+| E-mail | `teste@teste.com` |
+| Senha | `Teste@123` |
+| Permissões | Fornecedor e Produto (Adicionar, Atualizar, Excluir) |
+
+```bash
+# Aplicar o seed (banco local)
+sqlcmd -S "(localdb)\mssqllocaldb" -i e2e/seed.sql
+
+# Aplicar o seed (Docker)
+docker exec -i minhaapicore-sqlserver \
+  /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "MinhaS3nh@Forte!" -C \
+  -i /dev/stdin < e2e/seed.sql
+```
+
+---
+
 ## Variáveis de Ambiente
 
 O arquivo `src/environments/environment.development.ts` **não é commitado** (está no `.gitignore`).  

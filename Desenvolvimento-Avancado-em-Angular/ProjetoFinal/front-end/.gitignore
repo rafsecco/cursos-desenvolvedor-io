@@ -50,6 +50,8 @@ Thumbs.db
 /playwright-report/
 /test-results/
 
-# Environment files with real secrets (use environment.*.ts.example as template)
-src/environments/environment.development.ts
-src/environments/environment.staging.ts
+# Ignora environments TS
+**/environment*.ts
+
+# Mantém o example versionado
+!src/environments/environment.development.ts.example
