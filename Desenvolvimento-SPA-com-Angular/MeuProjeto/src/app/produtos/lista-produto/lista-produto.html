@@ -1,0 +1,44 @@
+<div class="container main-container">
+	<div class="row text-center">
+		@for (produto of produtos$ | async; track produto.id) {
+			<div class="col-md-4" style="padding-bottom: 30px">
+				<div class="card h-100">
+					<a class="text-decoration-none" [routerLink]="['/produto-detalhe', produto.id]">
+						<img src="/assets/{{ produto.imagem }}" height="164" width="253" />
+					</a>
+
+					<h4 class="card-title">
+						{{ produto.nome | titlecase }}
+					</h4>
+
+					@switch (produto.promocao) {
+						@case (true) { <p>Promoção!</p> }
+						@case (false) { <p>Por apenas:</p> }
+					}
+
+					@if (produto.promocao) {
+						<div class="card-body">
+							<h4>
+								De:
+								<small><del>{{ produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}</del></small>
+								Por: {{ produto.valorPromo | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}
+							</h4>
+						</div>
+					} @else {
+						<div class="card-body">
+							<h4>
+								{{ produto.valor | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt' }}
+							</h4>
+						</div>
+					}
+
+					<div class="card-footer">
+						<a class="btn btn-primary" [routerLink]="['/carrinho', produto.id]">
+							<span class="fa fa-shopping-cart"></span> Comprar
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
